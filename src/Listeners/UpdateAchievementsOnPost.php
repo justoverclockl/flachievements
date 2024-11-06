@@ -28,8 +28,14 @@ class UpdateAchievementsOnPost
 
     public function handle(Posted $event)
     {
+        if ($event->post->user_id === null) {
+            return;
+        }
+
         $DB=Post::query()->getConnection();
         $meanwords=$DB->select("select sum(my_length)/count(user_id) as mean from (SELECT user_id, length(content) - LENGTH(REPLACE(content,' ','')) as my_length FROM ".($DB->getTablePrefix())."".(app(Post::class)->getTable())." where user_id=".($event->post->user_id)." and type='comment') as Q1 where my_length > 10");
+
+
 
         $arr = array(
             array(
@@ -52,7 +58,7 @@ class UpdateAchievementsOnPost
             ),
         );
 
-        $event->actor["new_achievements"] = $this->calculator->recalculate($event->post->user,$arr);			
+        $event->actor["new_achievements"] = $this->calculator->recalculate($event->post->user,$arr);
 
     }
 }

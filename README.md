@@ -10,13 +10,13 @@
 ## Installation
 
 ```bash
-composer require malago/flarum-achievements
+composer require justoverclock/flachievements
 ```
 
 ## Updating
 
 ```bash
-composer update malago/flarum-achievements
+composer update justoverclock/flachievements
 php flarum cache:clear
 ```
 
@@ -59,7 +59,7 @@ In this case, we are using the icon `far fa-comments` as our achievement image. 
 
 ## Links
 
-- [Flarum Discuss post](https://discuss.flarum.org/d/26675-flarum-achievements-reward-your-users-for-participating)
-- [Source code on GitHub](https://github.com/malago86/flarum-achievements)
+- [Flarum Discuss post](https://discuss.flarum.org/d/33705-revive-achievements-extensions)
+- [Source code on GitHub](https://github.com/justoverclockl/flachievements)
 - [Changelog](https://github.com/malago86/flarum-achievements/blob/master/CHANGELOG.md)
-- [Download via Packagist](https://packagist.org/packages/malago/flarum-achievements)
+- [Download via Packagist](https://packagist.org/packages/justoverclock/flachievements)

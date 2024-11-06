@@ -31,7 +31,7 @@ app.initializers.add('malago-achievements', app => {
   extend(IndexPage.prototype, 'navItems', function (items) {
     const here = app.forum.attribute('malago-achievements.link-left-column');
 
-    if (!app.session.user || here != 1) {
+    if (!app.session.user || here !== 1) {
       return;
     }
     items.add('achievements', <LinkButton icon="fas fa-trophy" href={app.route('achievements')}>
@@ -49,7 +49,7 @@ app.initializers.add('malago-achievements', app => {
 
     var list = m("div.UserCard-Achievement-list");
 
-    if (here == "1" && element.attrs.className.includes("UserCard--popover")) {
+    if (here === "1" && element.attrs.className.includes("UserCard--popover")) {
       var achievements = this.attrs.user.achievements();
       if (achievements !== undefined && achievements !== null) {
         Object.keys(achievements).forEach(obj => {
@@ -128,20 +128,21 @@ app.initializers.add('malago-achievements', app => {
   });
 
   extend(Page.prototype, 'oncreate', function (promise) {
-    if (app.session.user !== undefined && app.session.user !== null) {
-      setTimeout(function () {
-        var new_achievements = app.session.user.achievements();
+    if (app.session.user) {
+      setTimeout(() => {
+        const newAchievements = app.session.user.achievements();
 
-        if (new_achievements !== undefined && new_achievements !== null && new_achievements.length > 0) {
-          var only_new_achievements = [];
-          for (var i = 0; i < new_achievements.length; i++) {
-            if (new_achievements[i].data.attributes.new == 1) {
-              only_new_achievements.push(new_achievements[i].data.attributes)
-              new_achievements[i].save({ new: 0, user_id: app.session.user.data.id });
-            }
+        if (newAchievements?.length > 0) {
+          const onlyNewAchievements = newAchievements
+            .filter(achievement => achievement.data.attributes.new === 1)
+            .map(achievement => {
+              achievement.save({ new: 0, user_id: app.session.user.data.id });
+              return achievement.data.attributes;
+            });
+
+          if (onlyNewAchievements.length > 0) {
+            app.modal.show(NewAchievementModal, { achievements: onlyNewAchievements });
           }
-          if (only_new_achievements.length > 0)
-            app.modal.show(NewAchievementModal, { achievements: only_new_achievements });
         }
       }, 1000);
     }

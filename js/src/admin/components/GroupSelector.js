@@ -38,21 +38,31 @@ export default class GroupSelector extends Component {
             buttonClassName="Button Button--danger"
           >
             {variables.map((g) =>
-                Button.component(
+              Button.component(
                 {
                   active: this.attrs.id(),
                   onclick: () => {
-                      this.attrs.id(g);
-                      if(g==="avatar" || g==="manual"){
-                        $(".FormInline").addClass("FormHidden");
-                      }else{
-                        $(".FormInline").removeClass("FormHidden");
-                        $("input.FormInline").attr("data-original-title", app.translator.trans("malago-achievements.admin.achievement_modal.tooltip."+g));
-                      }
+                    this.attrs.id(g);
+                    const formInlineElements = document.querySelectorAll(".FormInline");
+
+                    if (g === "avatar" || g === "manual") {
+                      formInlineElements.forEach(element => {
+                        element.classList.add("FormHidden");
+                      });
+                    } else {
+                      formInlineElements.forEach(element => {
+                        element.classList.remove("FormHidden");
+                      });
+
+                      const inputFormInlineElements = document.querySelectorAll("input.FormInline");
+                      inputFormInlineElements.forEach(input => {
+                        input.setAttribute("data-original-title", app.translator.trans("malago-achievements.admin.achievement_modal.tooltip." + g));
+                      });
+                    }
                   },
                 },
-                app.translator.trans("malago-achievements.admin.achievement_modal.variable."+g),
-                )
+                app.translator.trans("malago-achievements.admin.achievement_modal.variable." + g)
+              )
             )}
           </Dropdown>
       </span>
